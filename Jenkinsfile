@@ -1,9 +1,17 @@
 pipeline {
-    agent { docker { image 'python:3.11.4-alpine3.18' } }
+    agent any
     stages {
-        stage('build') {
+        stage('Initialize') {
             steps {
-                sh 'python --version'
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
+            }
+        }
+        stage('Build') {
+            steps{
+                echo 'Hello World'
             }
         }
     }
