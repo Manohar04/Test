@@ -15,7 +15,7 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Test') {
             steps{
                 echo 'Hello World'
             }
