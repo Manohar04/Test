@@ -13,7 +13,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Build your application (e.g., compile code, generate artifacts)
-                sh 'your-build-command'
+                sh 'pwd'
             }
         }
         
