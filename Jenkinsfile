@@ -13,28 +13,28 @@ pipeline {
         stage('Build') {
             steps {
                 // Build your application (e.g., compile code, generate artifacts)
-                sh 'pwd'
+                echo 'build'
             }
         }
         
         stage('Test') {
             steps {
                 // Run tests on your application
-                sh 'your-test-command'
+                echo 'your-test-command'
             }
         }
         
         stage('Deploy') {
             steps {
                 // Deploy your application to a staging environment
-                sh 'your-deploy-command'
+                echo 'your-deploy-command'
             }
         }
         
         stage('Promote to Production') {
             steps {
                 // Promote the application to production if tests pass in the staging environment
-                sh 'your-promote-command'
+                echo 'your-promote-command'
             }
         }
     }
