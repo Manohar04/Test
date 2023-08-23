@@ -16,7 +16,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Build your application (e.g., compile code, generate artifacts)
-                echo 'build'
+                echo 'build triggered automaticallu from webhook'
             }
         }
         
