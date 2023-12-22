@@ -5,6 +5,11 @@ pipeline {
         timeout(time: 100000, unit: 'SECONDS')
     }
     stages {
+        stage('update Repo'){
+            steps{
+                sh 'sudo apt-get update'
+            }
+        }
         stage('Checkout') {
             steps {
                 // Checkout your source code from the version control repository
