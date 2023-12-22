@@ -7,6 +7,7 @@ pipeline {
     stages {
         stage('update Repo'){
             steps{
+                echo 'running command sudo apt-get update'
                 sh 'sudo apt-get update'
             }
         }
