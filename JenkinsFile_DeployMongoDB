@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+    
+    environment {
+        // Define your remote server details
+        REMOTE_SERVER = 'your_remote_server_ip'
+        REMOTE_USER = 'your_remote_user'
+        REMOTE_PORT = '22' // Adjust the SSH port if it's not the default
+        MONGODB_VERSION = '4.4' // Specify the MongoDB version
+        MONGODB_DATA_DIR = '/data/db' // Adjust the MongoDB data directory
+    }
+    
+    stages {
+        stage('Deploy MongoDB') {
+            steps {
+                script {
+                    // Copy MongoDB installation package to the remote server
+                    sshagent(['your-ssh-credentials-id']) {
+                        sh "scp -P ${REMOTE_PORT} -r /path/to/mongodb-${MONGODB_VERSION} ${REMOTE_USER}@${REMOTE_SERVER}:/tmp/"
+                    }
+                    
+                    // Install MongoDB on the remote server
+                    sshagent(['your-ssh-credentials-id']) {
+                        sh "ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_SERVER} 'tar -zxvf /tmp/mongodb-${MONGODB_VERSION}.tgz -C /tmp/'"
+                        sh "ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_SERVER} 'sudo mv /tmp/mongodb-${MONGODB_VERSION} /opt/mongodb'"
+                    }
+                    
+                    // Start MongoDB service
+                    sshagent(['your-ssh-credentials-id']) {
+                        sh "ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_SERVER} 'sudo mkdir -p ${MONGODB_DATA_DIR}'"
+                        sh "ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_SERVER} 'sudo chown -R mongodb:mongodb ${MONGODB_DATA_DIR}'"
+                        sh "ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_SERVER} 'sudo systemctl start mongod'"
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'MongoDB deployed successfully!'
+        }
+        failure {
+            echo 'Failed to deploy MongoDB.'
+        }
+    }
+}
